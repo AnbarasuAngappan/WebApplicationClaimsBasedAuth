@@ -70,7 +70,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-
+            #region
             //if (ModelState.IsValid)
             //{
             //    string userName = model.Email; //(string)Session["UserName"];
@@ -105,16 +105,16 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             //}
             //ModelState.AddModelError("", "Invalid login attempt.");
             //return View(model);
-
+            #endregion
             //---
             string userName = model.Email;
-            var user = await UserManager.FindByNameAsync(model.Email);//User.Identity.Name)            
-            var password = await UserManager.CheckPasswordAsync(user, model.Password);
+            var user = await UserManager.FindByNameAsync(model.Email);//User.Identity.Name)          Validating the User ID  
+            var password = await UserManager.CheckPasswordAsync(user, model.Password);// Validating the Password
 
             if((user != null && user.UserName.Length > 0) && password == true)
             {
                 var claims = await UserManager.GetClaimsAsync(user.Id);
-                var roles = claims.FirstOrDefault(c => c.Value == model.Email);
+                var roles = claims.FirstOrDefault(c => c.Value == model.Email); // to check the role of the user..
                 var claimrole = roles.Value.ToString();
                 //var user1 = _context.Users.Single(x => x.Id == ...);
                 //var role = UserManager.Roles.Single(x => x.Id == user.Roles.ElementAt(0).RoleId);
@@ -124,7 +124,6 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 {
                     return View(model);
                 }
-
                 
                 var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Email) }, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.Name, ClaimTypes.Role);
 
@@ -134,6 +133,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
 
                 //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
                 AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);//new AuthenticationProperties { AllowRefresh = false }, 
+                              
 
                 //if(claimrole == model.Email)
                 //{
@@ -158,7 +158,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             }
 
 
-
+            #region
             //---
 
             //if (!ModelState.IsValid)
@@ -182,6 +182,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             //        ModelState.AddModelError("", "Invalid login attempt.");
             //        return View(model);
             //}
+            #endregion
         }
 
 
