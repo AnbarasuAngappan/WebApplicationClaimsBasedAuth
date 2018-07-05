@@ -135,7 +135,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 //identity.AddClaim(new Claim(ClaimTypes.Role, model.Email));
                 //identity.AddClaim(new Claim(ClaimTypes.Country, "India"));
                 identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                identity.AddClaim(new Claim(ClaimTypes.Role, ""));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "Manager"));
 
                 //identity.AddClaim(new Claim(ClaimTypes.Sid, "123"));
 
