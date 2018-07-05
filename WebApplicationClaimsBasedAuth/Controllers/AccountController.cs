@@ -115,6 +115,9 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             {
                 var claims = await UserManager.GetClaimsAsync(user.Id);
                 var roles = claims.FirstOrDefault(c => c.Value == model.Email); // to check the role of the user..
+
+              
+
                 var claimrole = roles.Value.ToString();
                 //var user1 = _context.Users.Single(x => x.Id == ...);
                 //var role = UserManager.Roles.Single(x => x.Id == user.Roles.ElementAt(0).RoleId);
@@ -125,15 +128,32 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                     return View(model);
                 }
                 
-                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Email) }, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.Name, ClaimTypes.Role);
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Email) }, 
+                                                            DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.Name, ClaimTypes.Role);
 
                 identity.AddClaim(new Claim(ClaimTypes.Email, userName));
-                identity.AddClaim(new Claim(ClaimTypes.Role, model.Email));
+                //identity.AddClaim(new Claim(ClaimTypes.Role, model.Email));
+                //identity.AddClaim(new Claim(ClaimTypes.Country, "India"));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                identity.AddClaim(new Claim(ClaimTypes.Role, ""));
+
                 //identity.AddClaim(new Claim(ClaimTypes.Sid, "123"));
 
+
                 //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);//new AuthenticationProperties { AllowRefresh = false }, 
-                              
+                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe}, identity);//new AuthenticationProperties { AllowRefresh = false }, 
+
+                //ClaimsIdentity claimsIdentity = new ClaimsIdentity();
+                bool a = identity.HasClaim(roles.Type, roles.Value);
+
+
+
+                //if ((ClaimsIdentity)User.Identity).HasClaim("role", "miAdmin")
+                //        {
+
+                //}
+
+                //, RedirectUri = "Employees/canCreateView"
 
                 //if(claimrole == model.Email)
                 //{

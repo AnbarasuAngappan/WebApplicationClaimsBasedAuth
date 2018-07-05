@@ -13,6 +13,19 @@
 }
 
 
+@*@{
+    if (System.Security.Claims.ClaimsPrincipal.Current.Claims.ToList().FirstOrDefault(c => c.Type == "Role" && c.Value == "anbu@gmail.com") != null)
+    {
+
+    }
+    else
+    {
+
+    }
+}*@
+
+
+
 @*<p>
         @Html.ActionLink("Create New", "Create")
     </p>*@
@@ -66,8 +79,8 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id = item.EmployeeID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.EmployeeID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID })*@
+                    @Html.ActionLink("Details", "Details", new { id = item.EmployeeID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID })*@
             </td>
         </tr>
     }

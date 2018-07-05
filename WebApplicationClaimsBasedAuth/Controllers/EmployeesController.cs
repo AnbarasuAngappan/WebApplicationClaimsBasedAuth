@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using WebApplicationClaimsBasedAuth.Models;
@@ -16,6 +17,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
     public class EmployeesController : Controller
     {      
 
+
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Employees
         [Authorize(Roles = "example@gmail.com")]
@@ -25,11 +27,45 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             
         }
 
-        [Authorize(Roles = "anbu@gmail.com")]
+        //[Authorize(Roles = "anbu@gmail.com")]
         public ActionResult canCreateView()
         {
-            List<Employee> contacts = db.Employees.ToList();
-            return View(contacts);
+            //    if(ClaimsPrincipal.Current.Claims.ToList().FirstOrDefault(c => c.Type == "Surname" && c.Type == "anbu@gmail.com") != null)
+            //    { 
+
+            //    }
+            //    else
+            //    {
+
+            //    }
+
+
+
+            //if (((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/country", "India"))
+            //{
+            //    List<Employee> contacts = db.Employees.ToList();
+            //    return View(contacts);
+
+            //    //http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+            //}
+
+            //else
+            //    return RedirectToAction("Error"); //View();
+
+
+            if (((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Admin"))
+            {
+                List<Employee> contacts = db.Employees.ToList();
+                return View(contacts);
+
+                //http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+            }
+
+            else
+                return RedirectToAction("Error"); //View();
+
+
+
         }
 
         // GET: Employees/Details/5
@@ -72,11 +108,16 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             return View(employee);
         }
 
-        [Authorize(Roles = "balaji@gmail.com")]
+        //[Authorize(Roles = "balaji@gmail.com")]
         public ActionResult CanEditView()
         {
-            List<Employee> contacts = db.Employees.ToList();
-            return View(contacts);
+            if (((System.Security.Claims.ClaimsIdentity)User.Identity).HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "Manager")) //Admin
+            {
+                List<Employee> contacts = db.Employees.ToList();
+                return View(contacts);
+            }
+            else
+                return RedirectToAction("Error");        
         }
 
 
@@ -153,6 +194,12 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 throw;
             }           
             
+        }
+
+
+        public ActionResult Error()
+        {
+            return View();
         }
     }
 }

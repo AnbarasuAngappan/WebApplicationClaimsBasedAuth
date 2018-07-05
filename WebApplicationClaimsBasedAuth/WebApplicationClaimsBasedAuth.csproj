@@ -447,6 +447,7 @@
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Employees\canCreateView.cshtml" />
     <Content Include="Views\Employees\CanEditView.cshtml" />
+    <Content Include="Views\Employees\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
