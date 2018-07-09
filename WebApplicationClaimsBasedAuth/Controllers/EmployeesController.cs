@@ -28,11 +28,9 @@ namespace WebApplicationClaimsBasedAuth.Controllers
         [Authorize(Roles = "canCreate")]//[Authorize(Roles = "Admin")]
         public ActionResult canCreateView()
         {
-
             List<Employee> contacts = db.Employees.ToList();
             return View(contacts);
-
-
+            #region
             //    if(ClaimsPrincipal.Current.Claims.ToList().FirstOrDefault(c => c.Type == "Surname" && c.Type == "anbu@gmail.com") != null)
             //    { 
 
@@ -63,6 +61,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
 
             //else
             //    return RedirectToAction("Error"); //View();
+            #endregion
         }
 
         // GET: Employees/Details/5
