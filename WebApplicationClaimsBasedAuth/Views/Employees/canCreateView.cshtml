@@ -8,7 +8,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h4>Welcome User @(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Guest") (To Create Employee Details)</h4>
+    <h4 style="color:green">Welcome User <b>@(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Guest")</b> (To Create Employee Details)</h4>
     @*<a href="@Url.Action("SignOut","Home")">Logout</a>*@
 }
 

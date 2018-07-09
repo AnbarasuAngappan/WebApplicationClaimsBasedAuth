@@ -64,15 +64,16 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Update" class="btn btn-success" />
+                <input type="submit" value="Update" class="btn btn-warning" />
+                <input type='button' class="btn btn-success" value='Back To List' onclick='window.location = "@Url.Action("CanEditView", "Employees")";' />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "CanEditView")
-</div>
+    <div>
+        @*@Html.ActionLink("Back to List", "CanEditView")*@       
+    </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
