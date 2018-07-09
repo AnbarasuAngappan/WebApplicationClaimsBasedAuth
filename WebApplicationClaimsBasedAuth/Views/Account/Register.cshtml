@@ -32,23 +32,23 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.UserClaims, new { @class = "col-md-2 control-label" })         
-        <div class="col-md-10">
+        <div class="col-lg-9">
             @for (int i = 0; i < Model.UserClaims.Count; i++)
             {
+                <div class="col-lg-2">
                 @Html.HiddenFor(m => m.UserClaims[i].Value)
-                @Html.CheckBoxFor(m => m.UserClaims[i].Selected)
-                // assumes you want the Name value to be used as the label for the checkbox
-                @Html.LabelFor(m => m.UserClaims[i].Selected, Model.UserClaims[i].Value)<br />
+                @Html.CheckBoxFor(m => m.UserClaims[i].Selected)                
+                @Html.LabelFor(m => m.UserClaims[i].Selected, Model.UserClaims[i].Value)
+                </div>
             }
 
         </div>
-
     </div>     
   
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-primary" value="Register" />
         </div>
     </div>
     }
