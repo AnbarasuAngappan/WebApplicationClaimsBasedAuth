@@ -9,7 +9,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
    /* [Authorize(Roles = "anbu@gmail.com")]*/ //[Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
-        [Authorize(Roles = "anbu@gmail.com")]
+        [Authorize(Roles = "canEdit,canCreate,canDelete")]
         public ActionResult Index()
         {
             ViewBag.Message = "Your Login By User Roles Admin Claim";

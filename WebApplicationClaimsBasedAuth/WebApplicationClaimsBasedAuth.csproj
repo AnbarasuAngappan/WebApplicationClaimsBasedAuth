@@ -361,6 +361,7 @@
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Data\ClaimData.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -448,6 +449,7 @@
     <Content Include="Views\Employees\canCreateView.cshtml" />
     <Content Include="Views\Employees\CanEditView.cshtml" />
     <Content Include="Views\Employees\Error.cshtml" />
+    <Content Include="Views\Employees\canDeleteView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

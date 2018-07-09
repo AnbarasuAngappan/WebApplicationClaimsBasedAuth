@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace WebApplicationClaimsBasedAuth.Models
 {
@@ -60,6 +61,9 @@ namespace WebApplicationClaimsBasedAuth.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "User Claims")]
+        public List<SelectListItem> UserClaims { get; set; }
     }
 
     public class RegisterViewModel
@@ -77,8 +81,12 @@ namespace WebApplicationClaimsBasedAuth.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "User Claims")]
+        public List<SelectListItem> UserClaims { get; set; }
+
     }
 
     public class ResetPasswordViewModel
@@ -96,7 +104,7 @@ namespace WebApplicationClaimsBasedAuth.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

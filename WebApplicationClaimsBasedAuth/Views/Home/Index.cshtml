@@ -4,10 +4,10 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h4>Welcome User @(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Guest") to be a Admin</h4>
+    <h4>Welcome User @(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Guest")</h4>
 }
  
-<h3>@ViewBag.Message</h3>
+@*<h3>@ViewBag.Message</h3>*@
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -6,8 +7,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using WebApplicationClaimsBasedAuth.Data;
 using WebApplicationClaimsBasedAuth.Models;
 
 namespace WebApplicationClaimsBasedAuth.Controllers
@@ -59,8 +62,16 @@ namespace WebApplicationClaimsBasedAuth.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            //LoginViewModel loginViewModel = new LoginViewModel();
+
+            //loginViewModel.UserClaims = ClaimData.UserClaims.Select(c => new SelectListItem
+            //{
+            //    Text = c,
+            //    Value = c
+            //}).ToList();
+
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View();//loginViewModel
         }
 
         //
@@ -105,46 +116,103 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             //}
             //ModelState.AddModelError("", "Invalid login attempt.");
             //return View(model);
-            #endregion
+
             //---
+
+            //List<SelectListItem> userClaims = model.UserClaims.Where(c => c.Selected).ToList();
+            //foreach (var claim in userClaims)
+            //{
+            //    //user.Claims.Add(new IdentityUserClaim<string>
+            //    //{
+            //    //    ClaimType = claim.Value,
+            //    //    ClaimValue = claim.Value
+            //    //});
+            //    user.Claims.Add(new IdentityUserClaim
+            //    {
+            //        ClaimType = claim.Value,
+            //        ClaimValue = claim.Value
+            //    });
+
+            //}
+            #endregion
+
+            string[] vs = new string[100];           
             string userName = model.Email;
             var user = await UserManager.FindByNameAsync(model.Email);//User.Identity.Name)          Validating the User ID  
             var password = await UserManager.CheckPasswordAsync(user, model.Password);// Validating the Password
-
-            if((user != null && user.UserName.Length > 0) && password == true)
+            if ((user != null && user.UserName.Length > 0) && password == true)
             {
                 var claims = await UserManager.GetClaimsAsync(user.Id);
-                var roles = claims.FirstOrDefault(c => c.Value == model.Email); // to check the role of the user..
+                var roles = claims.Where(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").ToList(); // to check the role of the user..
 
-              
+                #region
+                //for (int i = 0; i < roles.Count; i++)
+                //{
+                //    vs[i] = roles.
+                //}
 
-                var claimrole = roles.Value.ToString();
+
+                //string[] roles = GetRolesForUser(User.Identity.Name);
+                //var id = ClaimsPrincipal.Current.Identities.First();
+                //foreach (var role in roles)
+                //{
+                //    id.Claims.Add(new Claim(ClaimTypes.Role, role));
+                //}
+
+
+
+
+                //var claimss = new List<Claim>
+                //    {
+                //        new Claim(ClaimTypes.Role, roles)
+                //    };
+
+
+                //var claimrole = ""; //= roles.Value.ToString();
+                //var claimType = "";// roles.Type.ToString();
+                //var claimrole = roles.FirstOrDefault(c => c.Value == model.Email);//Value.ToString();
+                //var claimType = roles.FirstOrDefault(c => c.Type == "");
                 //var user1 = _context.Users.Single(x => x.Id == ...);
                 //var role = UserManager.Roles.Single(x => x.Id == user.Roles.ElementAt(0).RoleId);
                 //var claims = _roleManager.GetClaimsAsync(role).Result;
+                #endregion
 
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
-                
-                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Email) }, 
-                                                            DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.Name, ClaimTypes.Role);
 
+              
+
+                //foreach (var item in roles)
+                //{
+
+                //}
+
+                var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Email)},
+                                                       DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.Name, ClaimTypes.Role);
                 identity.AddClaim(new Claim(ClaimTypes.Email, userName));
+                foreach (var item in roles)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, item.Value));
+                    //user.Claims.Add(new IdentityUserClaim());
+                }
                 //identity.AddClaim(new Claim(ClaimTypes.Role, model.Email));
                 //identity.AddClaim(new Claim(ClaimTypes.Country, "India"));
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Manager"));
-
+                //identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+                //identity.AddClaim(new Claim(claimType, claimrole));
                 //identity.AddClaim(new Claim(ClaimTypes.Sid, "123"));
-
-
                 //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe}, identity);//new AuthenticationProperties { AllowRefresh = false }, 
+                AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = model.RememberMe }, identity);
+                return RedirectToLocal(returnUrl, "");//claimrole
+
+
+
+                #region
+                //new AuthenticationProperties { AllowRefresh = false }, 
 
                 //ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-                bool a = identity.HasClaim(roles.Type, roles.Value);
+                //bool a = identity.HasClaim(roles.Type, roles.Value);
 
 
 
@@ -168,8 +236,8 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 //    return RedirectToAction("Contact", "Home");
                 //}
                 //else
-                return RedirectToLocal(returnUrl,claimrole);
-
+                //return RedirectToLocal(returnUrl,claimrole);
+                #endregion
             }
             else
             {
@@ -262,7 +330,17 @@ namespace WebApplicationClaimsBasedAuth.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+
+            RegisterViewModel model = new RegisterViewModel();
+            model.UserClaims = ClaimData.UserClaims.Select(c => new SelectListItem
+            {
+                Text = c,
+                Value = c
+            }).ToList();
+
+            return View(model);
+
+           // return View();
         }
 
         //
@@ -274,9 +352,22 @@ namespace WebApplicationClaimsBasedAuth.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+                string userRoles = null;
+                List<SelectListItem> userClaims = model.UserClaims.Where(c => c.Selected).ToList();
+
+                foreach (var item in userClaims)
+                {
+                    userRoles = item.Value;
+                }
+
+
                 var result = await UserManager.CreateAsync(user, model.Password);
-                var claimaddresult = await UserManager.AddClaimAsync(user.Id, new Claim(ClaimTypes.Role, model.Email));//"newCustomClaim", "claimValue"                                                                                                                       
+                var claimaddresult = await UserManager.AddClaimAsync(user.Id, new Claim(ClaimTypes.Role, userRoles));//"newCustomClaim", "claimValue"                                                                                                                       
                 //await UserManager.AddToRoleAsync(user.Id, "CanEdit");                                                                                                                        
                 
                 if (result.Succeeded && claimaddresult.Succeeded)
@@ -603,20 +694,20 @@ namespace WebApplicationClaimsBasedAuth.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl, string Role)
         {
-            if(Role != null && Role.Length > 0)
-            {              
-                if(Role == "anbu@gmail.com")
-                {
-                    return RedirectToAction("canCreateView", "Employees");
-                }
-                else if(Role == "balaji@gmail.com")
-                {
-                    return RedirectToAction("CanEditView", "Employees");
-                }           
+            //if(Role != null && Role.Length > 0)
+            //{              
+            //    if(Role == "canCreate")
+            //    {
+            //        return RedirectToAction("canCreateView", "Employees");
+            //    }
+            //    else if(Role == "canEdit")
+            //    {
+            //        return RedirectToAction("CanEditView", "Employees");
+            //    }   
                    
 
-            }
-            return RedirectToAction("", "");
+            //}
+            return RedirectToAction("Index", "Home");
         }
 
 
