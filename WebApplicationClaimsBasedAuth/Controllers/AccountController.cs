@@ -739,6 +739,17 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
+
+        public ActionResult Getallclaimns()
+        {
+            //var x = User.Identity.GetUserId();
+            var a = UserManager.FindByName(User.Identity.Name);           
+            ViewBag.Message = UserManager.GetClaims(a.Id);
+            return View();
+
+            //return View(UserManager.GetClaims(User.Identity.GetUserId()));
+        }
         #endregion
     }
 }

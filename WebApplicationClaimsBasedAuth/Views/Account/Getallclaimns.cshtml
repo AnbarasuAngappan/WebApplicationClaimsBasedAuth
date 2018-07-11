@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Getallclaimns";
+}
+
+<h2>Getallclaimns</h2>
+
+
+@foreach (var item in ViewBag.Message)
+{
+<p>
+    @item.Type.ToString();
+    @item.Value.ToString();
+</p>
+}
+

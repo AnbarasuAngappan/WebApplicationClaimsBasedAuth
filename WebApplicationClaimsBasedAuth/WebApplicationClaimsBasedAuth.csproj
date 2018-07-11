@@ -450,6 +450,7 @@
     <Content Include="Views\Employees\CanEditView.cshtml" />
     <Content Include="Views\Employees\Error.cshtml" />
     <Content Include="Views\Employees\canDeleteView.cshtml" />
+    <Content Include="Views\Account\Getallclaimns.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
