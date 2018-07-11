@@ -3,14 +3,63 @@
     ViewBag.Title = "Getallclaimns";
 }
 
-<h2>Getallclaimns</h2>
+@*<h2>Claimns</h2>*@
+
+<h4 style="color:saddlebrown">List of the claims Assigned to the User <b>@User.Identity.Name</b></h4>
 
 
-@foreach (var item in ViewBag.Message)
+<table class="table" style="color:forestgreen">
+    <tr>
+        <th>
+           Claim Type
+        </th>
+        <th>
+           Value
+        </th>      
+    </tr>
+
+    @foreach (var item in ViewBag.Message)
+    {
+        <tr>
+            <td>
+                @item.Type.ToString();
+            </td>
+            <td>
+                @item.Value.ToString();
+            </td>           
+        </tr>
+    }
+
+</table>
+
+
+
+
+@*@foreach (var item in ViewBag.Message)
 {
-<p>
-    @item.Type.ToString();
-    @item.Value.ToString();
-</p>
-}
+    <table class="table-hover">        
+        <tr>
+           <th>
+               Value Type
+           </th>
+        </tr>  
+        <tr>
+           <th>
+               Value
+           </th>
+        </tr>  
+        <tr>
+            <td>
+                @item.Type.ToString();
+              
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @item.Value.ToString();
+            </td>
+        </tr>
+    </table> 
+
+}*@
 
