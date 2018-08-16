@@ -31,6 +31,10 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             List<Employee> contacts = db.Employees.ToList();
             return View(contacts);
             #region
+
+            //TempData["Id"] = "sdgvfdgb";
+            //return RedirectToAction("ValidateUserID", "Account");
+
             //    if(ClaimsPrincipal.Current.Claims.ToList().FirstOrDefault(c => c.Type == "Surname" && c.Type == "anbu@gmail.com") != null)
             //    { 
 

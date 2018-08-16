@@ -72,8 +72,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View();//loginViewModel
-        }
-
+        }      
         //
         // POST: /Account/Login
         [HttpPost]
@@ -139,6 +138,7 @@ namespace WebApplicationClaimsBasedAuth.Controllers
             string[] vs = new string[100];           
             string userName = model.Email;
             var user = await UserManager.FindByNameAsync(model.Email);//User.Identity.Name)          Validating the User ID  
+            var a = await UserManager.FindByIdAsync(user.Id);
             var password = await UserManager.CheckPasswordAsync(user, model.Password);// Validating the Password
             if ((user != null && user.UserName.Length > 0) && password == true)
             {
@@ -738,6 +738,30 @@ namespace WebApplicationClaimsBasedAuth.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+
+        internal class validateUserID : HttpUnauthorizedResult
+        {
+            AccountController account = new AccountController();
+            public validateUserID(string UserID)
+            {
+               var a = account.UserManager.FindByIdAsync(UserID);
+
+            }
+        }
+
+
+        public ActionResult ValidateUserID(string id)
+        {
+            id = TempData["Id"].ToString();
+            var a = UserManager.FindByName(User.Identity.Name);
+            var x = User.Identity.GetUserId();
+            //var a = UserManager.FindById(id);
+            //ViewBag.Message = UserManager.GetClaims(a.Id);
+            return View();
+
+            //return View(UserManager.GetClaims(User.Identity.GetUserId()));
         }
 
 
